@@ -1,0 +1,25 @@
+# Orchestration config: every directory runs on the Stategraph engine, and a
+# state is created on first use, so a developer only adds Terraform.
+workflows:
+  - tag_query: ""
+    engine:
+      name: stategraph
+      tf_cmd: tofu
+      # Pin the CLI to a release whose state schema matches the server.
+      version: '3.2.8'
+    plan:
+      - type: run
+        cmd: ['${TERRATEAM_ROOT}/.stategraph/ensure-state.sh']
+        # Shown in the PR comment even on success: it prints the stategraph.json
+        # a developer can commit.
+        visible_on: always
+      - type: init
+      - type: plan
+    apply:
+      - type: run
+        cmd: ['${TERRATEAM_ROOT}/.stategraph/ensure-state.sh']
+        # Shown in the PR comment even on success: it prints the stategraph.json
+        # a developer can commit.
+        visible_on: always
+      - type: init
+      - type: apply
