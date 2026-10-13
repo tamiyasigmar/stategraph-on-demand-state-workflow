@@ -1,5 +1,5 @@
 resource "terraform_data" "db_a" {
-  input = "db-a v1"
+  input = "db-a v2"
 }
 
 output "db_a" {
